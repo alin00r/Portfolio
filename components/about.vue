@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="intro-photo animated-item from-right">
-          <img src="/profile.jpeg" alt="ALI NOUR" />
+          <img src="/profile.JPEG" alt="ALI NOUR" />
         </div>
       </div>
 
@@ -151,7 +151,7 @@ onMounted(() => {
       });
     },
     { threshold: 0.15 }
-  ); 
+  );
 
   if (aboutSectionRef.value) {
     observer.observe(aboutSectionRef.value);
