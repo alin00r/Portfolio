@@ -27,7 +27,7 @@ export const certificatesData = [
     id: 4,
     title: 'Problem Solving (Basic)',
     issuer: 'HackerRank',
-    imageUrl: '/certificate/ProblemSolving.jpeg',
+    imageUrl: '/certificate/ProblemSolving.png',
     date: '2023',
   },
 ];
