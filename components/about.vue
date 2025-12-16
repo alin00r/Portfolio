@@ -1,0 +1,457 @@
+<template>
+  <section id="about" ref="aboutSectionRef">
+    <div class="content-wrapper">
+      <div class="title-block">
+        <h2 class="section-title animated-item">About Me</h2>
+        <p class="subtitle animated-item">You can't love what you don't know</p>
+      </div>
+
+      <div class="intro-flex">
+        <div class="intro-text">
+          <h1 class="animated-item from-left">
+            Hello, I'm<br /><span class="highlight-name">Ali Nour</span>
+          </h1>
+          <p class="bio animated-item from-left">
+            Hey there! I'm Ali Nour, a software engineer and Local-first
+            enthusiast. Based in the beautiful ismailia city, Egypt. I'm a
+            dedicated backend developer with expertise in building robust and
+            scalable server-side applications. I specialize in Node.js, Express,
+            and database optimization, with a strong foundation in web
+            technologies.
+          </p>
+          <div class="quote animated-item from-left">
+            <p>
+              "The most important step of all is the first step. Start
+              something."
+            </p>
+            <span class="author">- Blake Mycoskie</span>
+          </div>
+          <div class="action-buttons animated-item">
+            <a
+              href="https://drive.google.com/file/d/1oH5SoX-JqenCsPD3AnC5usbyxC4Pm3cB/view?usp=drive_link"
+              download
+              class="btn btn-primary"
+            >
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                ></path>
+              </svg>
+              <span>Download CV</span>
+            </a>
+            <a href="#portofolio" class="btn btn-secondary">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+              <span>View Projects</span>
+            </a>
+          </div>
+        </div>
+        <div class="intro-photo animated-item from-right">
+          <img src="/profile.jpeg" alt="ALI NOUR" />
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div
+          class="stat-item animated-item"
+          @click="scrollToPortfolio('projects')"
+        >
+          <div class="stat-icon-wrapper">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+              ></path>
+            </svg>
+          </div>
+          <span class="stat-number">10+</span>
+          <p class="stat-title">TOTAL PROJECTS</p>
+          <p class="stat-desc">Innovative web solutions</p>
+          <div class="stat-arrow">➔</div>
+        </div>
+        <div
+          class="stat-item animated-item"
+          @click="scrollToPortfolio('certificates')"
+        >
+          <div class="stat-icon-wrapper">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              ></path>
+            </svg>
+          </div>
+          <span class="stat-number">5+</span>
+          <p class="stat-title">CERTIFICATES</p>
+          <p class="stat-desc">Professional skills validated</p>
+          <div class="stat-arrow">➔</div>
+        </div>
+        <div
+          class="stat-item animated-item"
+          @click="scrollToPortfolio('tech-stack')"
+        >
+          <div class="stat-icon-wrapper">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m-9 9a9 9 0 019-9"
+              ></path>
+            </svg>
+          </div>
+          <span class="stat-number">1+</span>
+          <p class="stat-title">YEARS OF EXPERIENCE</p>
+          <p class="stat-desc">Continuous learning journey</p>
+          <div class="stat-arrow">➔</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+const aboutSectionRef = ref(null);
+let observer = null;
+
+const scrollToPortfolio = (targetTab) => {
+  const portfolioSection = document.getElementById('portofolio');
+
+  if (portfolioSection) {
+    portfolioSection.scrollIntoView({ behavior: 'smooth' });
+    const event = new CustomEvent('change-tab', { detail: targetTab });
+    window.dispatchEvent(event);
+  }
+};
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        } else {
+          entry.target.classList.remove('in-view');
+        }
+      });
+    },
+    { threshold: 0.15 }
+  ); 
+
+  if (aboutSectionRef.value) {
+    observer.observe(aboutSectionRef.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (observer) observer.disconnect();
+});
+</script>
+
+<style scoped>
+/* ===== STRUKTUR UTAMA (UPDATED) ===== */
+#about {
+  /* Samakan dengan Contact */
+  padding-top: 50px;
+  padding-bottom: 100px;
+  scroll-margin-top: 80px; /* Biar pas diklik navbar berhentinya pas */
+}
+
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem; /* HAPUS padding top/bottom bawaan global */
+}
+
+/* Sisa CSS ke bawah SAMA PERSIS, tidak ada yang diubah */
+.title-block {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.intro-flex {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ... (lanjutkan CSS Typography, Photo, Buttons, Stats, Animasi, dll seperti sebelumnya) ... */
+.section-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  color: var(--pikachu-yellow);
+  font-weight: 500;
+}
+
+.intro-text {
+  flex: 1;
+}
+.intro-text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.highlight-name {
+  color: var(--pikachu-yellow);
+}
+.bio {
+  color: rgb(209, 213, 219);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.quote {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--pikachu-yellow);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  font-style: italic;
+  color: rgb(209, 213, 219);
+}
+
+.intro-photo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 350px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+.intro-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--bg-dark);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+  transition: transform 0.4s ease-out;
+}
+.intro-photo:hover img {
+  transform: scale(1.1);
+}
+.intro-photo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.intro-photo:hover::after {
+  transform: translateX(100%) skewX(-20deg);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.btn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.btn-primary {
+  background: var(--pikachu-yellow);
+  color: var(--bg-dark);
+  border: 2px solid var(--pikachu-yellow);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text-white);
+  border: 2px solid rgb(75, 85, 99);
+}
+.btn-secondary:hover {
+  border-color: var(--pikachu-yellow);
+  color: var(--pikachu-yellow);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+}
+
+.stat-item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgb(75, 85, 99);
+  padding: 1.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.stat-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--pikachu-yellow);
+}
+.stat-icon-wrapper {
+  color: var(--pikachu-yellow);
+  width: 32px;
+  height: 32px;
+  margin-bottom: 1rem;
+}
+.stat-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-white);
+}
+.stat-title {
+  font-weight: 500;
+  margin-top: 0.5rem;
+  color: rgb(209, 213, 219);
+}
+.stat-desc {
+  font-size: 0.875rem;
+  color: rgb(156, 163, 175);
+}
+.stat-arrow {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--pikachu-yellow);
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+}
+.stat-item:hover .stat-arrow {
+  transform: rotate(0deg);
+}
+
+.animated-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.from-left {
+  transform: translateX(-50px);
+}
+.from-right {
+  transform: translateX(50px);
+}
+#about.in-view .animated-item {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+#about.in-view .title-block .animated-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+#about.in-view .title-block .animated-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+#about.in-view .intro-text .animated-item:nth-child(1) {
+  transition-delay: 0.3s;
+}
+#about.in-view .intro-text .animated-item:nth-child(2) {
+  transition-delay: 0.4s;
+}
+#about.in-view .intro-text .animated-item:nth-child(3) {
+  transition-delay: 0.5s;
+}
+#about.in-view .intro-text .animated-item:nth-child(4) {
+  transition-delay: 0.6s;
+}
+#about.in-view .intro-photo.animated-item {
+  transition-delay: 0.6s;
+}
+#about.in-view .stats-grid .animated-item:nth-child(1) {
+  transition-delay: 0.8s;
+}
+#about.in-view .stats-grid .animated-item:nth-child(2) {
+  transition-delay: 0.9s;
+}
+#about.in-view .stats-grid .animated-item:nth-child(3) {
+  transition-delay: 1s;
+}
+
+@media (max-width: 992px) {
+  .intro-flex {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+  .intro-photo {
+    margin: 0 auto 2rem;
+    max-width: 250px;
+  }
+  .action-buttons {
+    justify-content: center;
+  }
+  .quote {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-title {
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .bio,
+  .quote {
+    max-width: 650px;
+  }
+}
+
+.quote .author {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--pikachu-yellow);
+  font-weight: 600;
+  font-style: normal; /* Biar ga miring kayak quotenya */
+}
+</style>
