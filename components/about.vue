@@ -123,7 +123,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-const API_URL = 'http://portfolio-backend-alinour.vercel.app/api';
+const API_URL = 'https://portfolio-backend-alinour.vercel.app/api';
 
 const aboutSectionRef = ref(null);
 let observer = null;
