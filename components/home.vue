@@ -17,15 +17,14 @@
                 d="M13 10V3L4 14h7v7l9-11h-7z"
               />
             </svg>
-            <span>Ready to Innovate</span>
+            <span>{{ homeData.badgeText }}</span>
           </div>
 
           <h1
             class="main-title anim-item anim-left"
             style="transition-delay: 0.2s"
           >
-            <span class="title-frontend">Backend</span>
-            <span class="title-developer">Developer</span>
+            <span class="title-developer">{{ homeData.mainTitle }}</span>
           </h1>
 
           <div
@@ -42,9 +41,7 @@
             class="description anim-item anim-up"
             style="transition-delay: 0.6s"
           >
-            I am a Backend developer with a passion for Delivering powerful
-            backend systems driven by a passion for solving real-world
-            challenges.
+            {{ homeData.description }}
           </p>
 
           <div
@@ -118,7 +115,11 @@
           class="right-content anim-item anim-right"
           style="transition-delay: 0.5s"
         >
-          <img src="/pikachu.gif" alt="Pikachu" class="pikachu-anim" />
+          <img
+            :src="homeData.animationImage"
+            alt="Animation"
+            class="pikachu-anim"
+          />
         </div>
       </div>
     </div>
@@ -131,40 +132,69 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+const API_URL = 'http://portfolio-backend-alinour.vercel.app/api';
+
 const currentText = ref('');
 const currentIndex = ref(0);
 const isDeleting = ref(false);
 const textIndex = ref(0);
 const typingInterval = ref(null);
 
-const texts = ['Backend Engineer', 'Node.js Developer'];
-const techStack = [
-  'Node.js',
-  'Javascript',
-  'Nest.js',
-  'Express.js',
-  'Typescript',
-  'MongoDB',
-  'PostgreSQL',
-];
+// Dynamic data from API
+const homeData = ref({
+  typingTexts: ['Backend Engineer', 'Node.js Developer'],
+  description:
+    'I am a Backend developer with a passion for Delivering powerful backend systems driven by a passion for solving real-world challenges.',
+  techStack: [
+    'Node.js',
+    'Javascript',
+    'Nest.js',
+    'Express.js',
+    'Typescript',
+    'MongoDB',
+    'PostgreSQL',
+  ],
+  badgeText: 'Ready to Innovate',
+  mainTitle: 'Backend Developer',
+  socialMedia: [
+    {
+      name: 'github',
+      href: 'https://github.com/alin00r',
+      image: '/github.svg',
+    },
+    {
+      name: 'linkedin',
+      href: 'https://www.linkedin.com/in/alinourr/',
+      image: '/linkedin.svg',
+    },
+    {
+      name: 'instagram',
+      href: 'https://instagram.com/alinourr',
+      image: '/instagram.svg',
+    },
+  ],
+  animationImage: '/pikachu.gif',
+});
 
-const socialMedia = [
-  {
-    name: 'github',
-    href: 'https://github.com/alin00r',
-    image: '/github.svg',
-  },
-  {
-    name: 'linkedin',
-    href: 'https://www.linkedin.com/in/alinourr/',
-    image: '/linkedin.svg',
-  },
-  {
-    name: 'instagram',
-    href: 'https://instagram.com/alinourr',
-    image: '/instagram.svg',
-  },
-];
+const texts = ref(homeData.value.typingTexts);
+const techStack = ref(homeData.value.techStack);
+const socialMedia = ref(homeData.value.socialMedia);
+
+// Fetch home data from API
+const fetchHome = async () => {
+  try {
+    const response = await fetch(`${API_URL}/home`);
+    const { data } = await response.json();
+    if (data) {
+      homeData.value = data;
+      texts.value = data.typingTexts;
+      techStack.value = data.techStack;
+      socialMedia.value = data.socialMedia;
+    }
+  } catch (error) {
+    console.error('Error fetching home data:', error);
+  }
+};
 
 const startTyping = () => {
   if (typingInterval.value) clearInterval(typingInterval.value);
@@ -210,7 +240,8 @@ const scrollToSection = (selector) => {
 const homeSectionRef = ref(null);
 let observer = null;
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchHome();
   startTyping();
 
   observer = new IntersectionObserver(

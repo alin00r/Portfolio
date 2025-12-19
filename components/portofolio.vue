@@ -191,17 +191,38 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { projectsData } from '~/utils/projectData.js';
-import { certificatesData } from '~/utils/certificateData.js';
+
+const API_URL = 'http://portfolio-backend-alinour.vercel.app/api';
 
 const activeTab = ref('projects');
 const setActiveTab = (tabName) => {
   activeTab.value = tabName;
 };
 
-const projects = ref(projectsData);
+const projects = ref([]);
+const certificates = ref([]);
 
-const certificates = ref(certificatesData);
+// Fetch projects from API
+const fetchProjects = async () => {
+  try {
+    const response = await fetch(`${API_URL}/projects`);
+    const { data } = await response.json();
+    projects.value = data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+  }
+};
+
+// Fetch certificates from API
+const fetchCertificates = async () => {
+  try {
+    const response = await fetch(`${API_URL}/certificates`);
+    const { data } = await response.json();
+    certificates.value = data;
+  } catch (error) {
+    console.error('Error fetching certificates:', error);
+  }
+};
 
 const techStack = ref([
   { name: 'HTML5', iconUrl: 'https://cdn.svgporn.com/logos/html-5.svg' },
@@ -274,7 +295,11 @@ const handleTabChange = (event) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  // Fetch data from API
+  await fetchProjects();
+  await fetchCertificates();
+
   window.addEventListener('change-tab', handleTabChange);
 
   observer = new IntersectionObserver(

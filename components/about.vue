@@ -9,28 +9,25 @@
       <div class="intro-flex">
         <div class="intro-text">
           <h1 class="animated-item from-left">
-            Hello, I'm<br /><span class="highlight-name">Ali Nour</span>
+            Hello, I'm<br /><span class="highlight-name">{{
+              aboutData.name
+            }}</span>
           </h1>
           <p class="bio animated-item from-left">
-            Hey there! I'm Ali Nour, a software engineer and Local-first
-            enthusiast. Based in the beautiful ismailia city, Egypt. I'm a
-            dedicated backend developer with expertise in building robust and
-            scalable server-side applications. I specialize in Node.js, Express,
-            and database optimization, with a strong foundation in web
-            technologies.
+            {{ aboutData.bio }}
           </p>
-          <div class="quote animated-item from-left">
-            <p>
-              "The most important step of all is the first step. Start
-              something."
-            </p>
-            <span class="author">- Blake Mycoskie</span>
+          <div class="quote animated-item from-left" v-if="aboutData.quote">
+            <p>"{{ aboutData.quote }}"</p>
+            <span class="author" v-if="aboutData.quoteAuthor"
+              >- {{ aboutData.quoteAuthor }}</span
+            >
           </div>
           <div class="action-buttons animated-item">
             <a
-              href="https://drive.google.com/file/d/1oH5SoX-JqenCsPD3AnC5usbyxC4Pm3cB/view?usp=drive_link"
+              :href="aboutData.cvUrl"
               download
               class="btn btn-primary"
+              v-if="aboutData.cvUrl"
             >
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -56,7 +53,7 @@
           </div>
         </div>
         <div class="intro-photo animated-item from-right">
-          <img src="/profile.JPEG" alt="ALI NOUR" />
+          <img :src="aboutData.profileImage" :alt="aboutData.name" />
         </div>
       </div>
 
@@ -75,7 +72,7 @@
               ></path>
             </svg>
           </div>
-          <span class="stat-number">10+</span>
+          <span class="stat-number">{{ stats.totalProjects }}+</span>
           <p class="stat-title">TOTAL PROJECTS</p>
           <p class="stat-desc">Innovative web solutions</p>
           <div class="stat-arrow">➔</div>
@@ -94,7 +91,7 @@
               ></path>
             </svg>
           </div>
-          <span class="stat-number">5+</span>
+          <span class="stat-number">{{ stats.totalCertificates }}+</span>
           <p class="stat-title">CERTIFICATES</p>
           <p class="stat-desc">Professional skills validated</p>
           <div class="stat-arrow">➔</div>
@@ -113,7 +110,7 @@
               ></path>
             </svg>
           </div>
-          <span class="stat-number">1+</span>
+          <span class="stat-number">{{ stats.yearsExperience }}+</span>
           <p class="stat-title">YEARS OF EXPERIENCE</p>
           <p class="stat-desc">Continuous learning journey</p>
           <div class="stat-arrow">➔</div>
@@ -126,8 +123,53 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
+const API_URL = 'http://portfolio-backend-alinour.vercel.app/api';
+
 const aboutSectionRef = ref(null);
 let observer = null;
+
+// About content from API
+const aboutData = ref({
+  name: 'Ali Nour',
+  title: 'Backend Developer',
+  bio: "Hey there! I'm Ali Nour, a software engineer and Local-first enthusiast. Based in the beautiful ismailia city, Egypt. I'm a dedicated backend developer with expertise in building robust and scalable server-side applications. I specialize in Node.js, Express, and database optimization, with a strong foundation in web technologies.",
+  quote: 'The most important step of all is the first step. Start something.',
+  quoteAuthor: 'Blake Mycoskie',
+  cvUrl:
+    'https://drive.google.com/file/d/1oH5SoX-JqenCsPD3AnC5usbyxC4Pm3cB/view?usp=drive_link',
+  profileImage: '/profile.JPEG',
+});
+
+// Stats from API
+const stats = ref({
+  totalProjects: 10,
+  totalCertificates: 5,
+  yearsExperience: 1,
+});
+
+// Fetch about data from API
+const fetchAbout = async () => {
+  try {
+    const response = await fetch(`${API_URL}/about`);
+    const { data } = await response.json();
+    if (data) {
+      aboutData.value = data;
+    }
+  } catch (error) {
+    console.error('Error fetching about data:', error);
+  }
+};
+
+// Fetch stats from API
+const fetchStats = async () => {
+  try {
+    const response = await fetch(`${API_URL}/stats`);
+    const { data } = await response.json();
+    stats.value = data;
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+  }
+};
 
 const scrollToPortfolio = (targetTab) => {
   const portfolioSection = document.getElementById('portofolio');
@@ -139,7 +181,11 @@ const scrollToPortfolio = (targetTab) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  // Fetch data from API
+  await fetchAbout();
+  await fetchStats();
+
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
