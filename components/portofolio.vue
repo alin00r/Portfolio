@@ -192,7 +192,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
-const API_URL = 'http://portfolio-backend-alinour.vercel.app/api';
+const API_URL = 'https://portfolio-backend-alinour.vercel.app/api';
 
 const activeTab = ref('projects');
 const setActiveTab = (tabName) => {

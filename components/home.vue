@@ -132,7 +132,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-const API_URL = 'https://portfolio-backend-alinour.vercel.app/api';
+const API_URL = 'portfolio-backend-alinour.vercel.app/api';
 
 const currentText = ref('');
 const currentIndex = ref(0);
